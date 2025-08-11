@@ -1,11 +1,6 @@
-import express from 'express'
 import * as cheerio from 'cheerio'
 import { Ollama } from 'ollama'
 import TurndownService from 'turndown'
-
-const app = express()
-app.use(express.json())
-const port = 8080
 
 const ollama = new Ollama()
 
@@ -49,24 +44,14 @@ async function getJSONData(markdown) {
   return JSON.parse(res.response)
 }
 
-app.post('/scrape', async (req, res) => {
-  try {
-    const { url } = req.body || {}
-    if (!url) return res.status(400).json({ error: 'Missing "url" in body' })
+async function scrapeAndParse(url) {
+  const html = await fetchHtml(url)
+  const recipeMarkdown = htmlToMarkdown(html)
+  const data = await getJSONData(recipeMarkdown)
 
-    const html = await fetchHtml(url)
-    const recipeMarkdown = htmlToMarkdown(html)
-    const data = await getJSONData(recipeMarkdown)
+  return data
+}
 
-    res.json(data)
-  } catch (err) {
-    console.error(err)
-    res
-      .status(500)
-      .json({ error: 'Scraping failed', details: String(err.message || err) })
-  }
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+export default {
+  scrapeAndParse,
+}
