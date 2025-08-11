@@ -11,7 +11,9 @@
   "description": "",
   "dependencies": {
     "cheerio": "^1.1.2",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "mongoose": "^8.17.1",
     "ollama": "^0.5.17",
     "turndown": "^7.2.0"
   }
