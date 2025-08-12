@@ -15,15 +15,16 @@ async function addRecipe(req, res) {
       return res.status(409).json({ message: 'Slug already exists' })
     }
 
-    res
-      .status(500)
-      .json({ error: 'Scraping failed', details: String(err.message || err) })
+    res.status(500).json({
+      error: 'Adding recipe failed',
+      details: String(err.message || err),
+    })
   }
 }
 
 async function getAllRecipes(_, res) {
   try {
-    const recipes = await Recipe.find()
+    const recipes = await Recipe.find().sort({ createdAt: -1 })
     res.json(recipes)
   } catch (err) {
     res.status(500).json({ message: err.message })

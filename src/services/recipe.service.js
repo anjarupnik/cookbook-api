@@ -38,7 +38,7 @@ async function getJSONData(markdown) {
     format: 'json',
     stream: false,
     keep_alive: '30m',
-    options: { temperature: 0.1, num_ctx: 8000, num_thread: 8 },
+    options: { temperature: 0.1, num_ctx: 8000 },
   })
 
   return JSON.parse(res.response)
